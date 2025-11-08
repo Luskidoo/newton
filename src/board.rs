@@ -1,9 +1,9 @@
 mod fen;
 mod game_state;
-mod zobrist;
-mod utils;
 mod history;
 mod make_move;
+mod utils;
+mod zobrist;
 
 use std::sync::Arc;
 
@@ -25,7 +25,7 @@ pub struct Board {
 }
 
 impl Board {
-    pub fn new() -> Self { 
+    pub fn new() -> Self {
         Self {
             pieces: [[BitBoard(0); NrOf::PIECE_TYPES]; Sides::BOTH + 1],
             piece_list: [Pieces::NONE; NrOf::SQUARES],
@@ -40,7 +40,7 @@ impl Board {
             Sides::WHITE => self.white_occupied(),
             Sides::BLACK => self.black_occupied(),
             Sides::BOTH => self.white_occupied() | self.black_occupied(),
-            _ => panic!("Invalid side")
+            _ => panic!("Invalid side"),
         }
     }
 
@@ -53,13 +53,23 @@ impl Board {
     }
 
     pub fn white_occupied(&self) -> BitBoard {
-        self.pieces[Sides::WHITE][Pieces::PAWN] | self.pieces[Sides::WHITE][Pieces::BISHOP]| self.pieces[Sides::WHITE][Pieces::KNIGHT] | self.pieces[Sides::WHITE][Pieces::ROOK] | self.pieces[Sides::WHITE][Pieces::QUEEN] | self.pieces[Sides::WHITE][Pieces::KING]
+        self.pieces[Sides::WHITE][Pieces::PAWN]
+            | self.pieces[Sides::WHITE][Pieces::BISHOP]
+            | self.pieces[Sides::WHITE][Pieces::KNIGHT]
+            | self.pieces[Sides::WHITE][Pieces::ROOK]
+            | self.pieces[Sides::WHITE][Pieces::QUEEN]
+            | self.pieces[Sides::WHITE][Pieces::KING]
     }
 
     pub fn black_occupied(&self) -> BitBoard {
-        self.pieces[Sides::BLACK][Pieces::PAWN] | self.pieces[Sides::BLACK][Pieces::BISHOP] | self.pieces[Sides::BLACK][Pieces::KNIGHT] | self.pieces[Sides::BLACK][Pieces::ROOK] | self.pieces[Sides::BLACK][Pieces::QUEEN] | self.pieces[Sides::BLACK][Pieces::KING]
+        self.pieces[Sides::BLACK][Pieces::PAWN]
+            | self.pieces[Sides::BLACK][Pieces::BISHOP]
+            | self.pieces[Sides::BLACK][Pieces::KNIGHT]
+            | self.pieces[Sides::BLACK][Pieces::ROOK]
+            | self.pieces[Sides::BLACK][Pieces::QUEEN]
+            | self.pieces[Sides::BLACK][Pieces::KING]
     }
-    
+
     // Initialize the piece list. This list is used to quickly determine
     // which piece type (rook, knight...) is on a square without having to
     // loop through the piece bitboards.
@@ -199,8 +209,10 @@ impl Board {
     }
 
     pub fn print_board(&self) {
-        let piece_chars = ['K', 'Q', 'R', 'B', 'N', 'P', 'k', 'q', 'r', 'b', 'n', 'p', '.'];
-        
+        let piece_chars = [
+            'K', 'Q', 'R', 'B', 'N', 'P', 'k', 'q', 'r', 'b', 'n', 'p', '.',
+        ];
+
         println!("  a b c d e f g h");
         println!("  ---------------");
         for rank in (0..8).rev() {
@@ -208,7 +220,7 @@ impl Board {
             for file in 0..8 {
                 let square = rank * 8 + file;
                 let mut piece_char = '.';
-                
+
                 for (piece_type, boards) in self.pieces.iter().enumerate() {
                     if boards[Sides::WHITE].0 & (1 << square) != 0 {
                         piece_char = piece_chars[piece_type];
@@ -218,22 +230,51 @@ impl Board {
                         break;
                     }
                 }
-                
+
                 print!("{} ", piece_char);
             }
             println!("| {}", rank + 1);
         }
         println!("  ---------------");
         println!("  a b c d e f g h");
-        
-        println!("Side to move: {}", if self.game_state.side_to_move == Sides::WHITE { "White" } else { "Black" });
-        println!("Castling rights: {}{}{}{}", 
-            if self.game_state.castling.0 & Castling::WK.0 != 0 { "K" } else { "" },
-            if self.game_state.castling.0 & Castling::WQ.0 != 0 { "Q" } else { "" },
-            if self.game_state.castling.0 & Castling::BK.0 != 0 { "k" } else { "" },
-            if self.game_state.castling.0 & Castling::BQ.0 != 0 { "q" } else { "" }
+
+        println!(
+            "Side to move: {}",
+            if self.game_state.side_to_move == Sides::WHITE {
+                "White"
+            } else {
+                "Black"
+            }
         );
-        println!("En passant square: {}", self.game_state.en_passant.map_or("None".to_string(), |sq| format!("{}", sq)));
+        println!(
+            "Castling rights: {}{}{}{}",
+            if self.game_state.castling.0 & Castling::WK.0 != 0 {
+                "K"
+            } else {
+                ""
+            },
+            if self.game_state.castling.0 & Castling::WQ.0 != 0 {
+                "Q"
+            } else {
+                ""
+            },
+            if self.game_state.castling.0 & Castling::BK.0 != 0 {
+                "k"
+            } else {
+                ""
+            },
+            if self.game_state.castling.0 & Castling::BQ.0 != 0 {
+                "q"
+            } else {
+                ""
+            }
+        );
+        println!(
+            "En passant square: {}",
+            self.game_state
+                .en_passant
+                .map_or("None".to_string(), |sq| format!("{}", sq))
+        );
         println!("Halfmove clock: {}", self.game_state.halfmove_clock);
         println!("Fullmove number: {}", self.game_state.fullmove_number);
         println!("Zobrist key: {}", self.game_state.zobrist_key);

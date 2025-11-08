@@ -1,6 +1,9 @@
-use crate::{defs::{Pieces, Square}, BitBoard, BitMove, Board, MoveList};
+use crate::{
+    defs::{Pieces, Square},
+    BitBoard, BitMove, Board, MoveList,
+};
 
-use super::{MoveGenerator};
+use super::MoveGenerator;
 
 impl MoveGenerator {
     pub fn generate_king_moves(&self, board: &Board, list: &mut MoveList) {
@@ -13,13 +16,12 @@ impl MoveGenerator {
             // if white
             if side == 0 {
                 to_bb &= !board.white_occupied()
-            }
-            else {
+            } else {
                 to_bb &= !board.black_occupied()
-            }           
+            }
             //println!("{}", to_bb);
             while to_bb.0 > 0 {
-            let to = BitBoard::next(&mut to_bb);
+                let to = BitBoard::next(&mut to_bb);
                 //println!("Adding king move from {} to {}", from, to);
                 self.add_move(&board, list, Pieces::KING, from.clone(), to.clone());
             }

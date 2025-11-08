@@ -1,4 +1,8 @@
-use crate::{defs::{Castling, NrOf, Piece, Pieces, Side, Sides, Square}, BitBoard, MoveGenerator, Board, movegen::bit_move::Move};
+use crate::{
+    defs::{Castling, NrOf, Piece, Pieces, Side, Sides, Square},
+    movegen::bit_move::Move,
+    BitBoard, Board, MoveGenerator,
+};
 
 // Castling Permissions Per Square
 type CPSquare = [BitBoard; NrOf::SQUARES];
@@ -76,7 +80,9 @@ impl Board {
             self.game_state.halfmove_clock = 0;
             // Change castling permissions on rook capture in the corner.
             if captured == Pieces::ROOK && has_permissions {
-                self.update_castling_permissions(self.game_state.castling & CASTLING_PERMS[to.clone().0]);
+                self.update_castling_permissions(
+                    self.game_state.castling & CASTLING_PERMS[to.clone().0],
+                );
             }
         }
 
@@ -103,7 +109,9 @@ impl Board {
         // Remove castling permissions if king/rook leaves from starting square.
         // (This will also adjust permissions when castling, because the king moves.)
         if (piece == Pieces::KING || piece == Pieces::ROOK) && has_permissions {
-            self.update_castling_permissions(self.game_state.castling & CASTLING_PERMS[from.clone().0]);
+            self.update_castling_permissions(
+                self.game_state.castling & CASTLING_PERMS[from.clone().0],
+            );
         }
 
         // If the king is castling, then also move the rook.

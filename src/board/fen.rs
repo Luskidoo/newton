@@ -7,7 +7,9 @@
 
 use crate::bitboard::*;
 use crate::board::*;
-use crate::defs::{Castling, Sides, Square, FEN_START_POSITION, MAX_GAME_MOVES, MAX_MOVE_RULE, Ranks, Files};
+use crate::defs::{
+    Castling, Files, Ranks, Sides, Square, FEN_START_POSITION, MAX_GAME_MOVES, MAX_MOVE_RULE,
+};
 use if_chain::if_chain;
 use std::ops::RangeInclusive;
 
@@ -96,7 +98,7 @@ fn pieces(board: &mut Board, part: &str) -> bool {
             'k' => {
                 board.pieces[Sides::BLACK][Pieces::KING] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::KING] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'q' => {
                 board.pieces[Sides::BLACK][Pieces::QUEEN] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::QUEEN] |= BitBoard(1) << BitBoard(square);
@@ -104,7 +106,7 @@ fn pieces(board: &mut Board, part: &str) -> bool {
             'r' => {
                 board.pieces[Sides::BLACK][Pieces::ROOK] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::ROOK] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'b' => {
                 board.pieces[Sides::BLACK][Pieces::BISHOP] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::BISHOP] |= BitBoard(1) << BitBoard(square);
@@ -112,35 +114,35 @@ fn pieces(board: &mut Board, part: &str) -> bool {
             'n' => {
                 board.pieces[Sides::BLACK][Pieces::KNIGHT] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::KNIGHT] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'p' => {
                 board.pieces[Sides::BLACK][Pieces::PAWN] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::PAWN] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'K' => {
                 board.pieces[Sides::WHITE][Pieces::KING] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::KING] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'Q' => {
                 board.pieces[Sides::WHITE][Pieces::QUEEN] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::QUEEN] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'R' => {
                 board.pieces[Sides::WHITE][Pieces::ROOK] |= BitBoard(1) << BitBoard(square);
-                board.pieces[Sides::BOTH] [Pieces::ROOK]|= BitBoard(1) << BitBoard(square);
-            },
+                board.pieces[Sides::BOTH][Pieces::ROOK] |= BitBoard(1) << BitBoard(square);
+            }
             'B' => {
                 board.pieces[Sides::WHITE][Pieces::BISHOP] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::BISHOP] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'N' => {
                 board.pieces[Sides::WHITE][Pieces::KNIGHT] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::KNIGHT] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             'P' => {
                 board.pieces[Sides::WHITE][Pieces::PAWN] |= BitBoard(1) << BitBoard(square);
                 board.pieces[Sides::BOTH][Pieces::PAWN] |= BitBoard(1) << BitBoard(square);
-            },
+            }
             '1'..='8' => {
                 if let Some(x) = c.to_digit(10) {
                     file += x as u64;
@@ -295,6 +297,7 @@ fn fmn(board: &mut Board, part: &str) -> bool {
 pub fn algebraic_square_to_number(algebraic_square: &str) -> Option<Square> {
     let index = SQUARE_NAME
         .iter()
-        .position(|&element| element == algebraic_square).unwrap();
+        .position(|&element| element == algebraic_square)
+        .unwrap();
     Some(Square(index))
 }

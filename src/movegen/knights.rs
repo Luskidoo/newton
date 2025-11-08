@@ -1,6 +1,9 @@
-use crate::{defs::{Pieces, Square}, BitBoard, BitMove, Board, MoveList};
+use crate::{
+    defs::{Pieces, Square},
+    BitBoard, BitMove, Board, MoveList,
+};
 
-use super::{MoveGenerator};
+use super::MoveGenerator;
 
 impl MoveGenerator {
     pub fn generate_knight_moves(&self, board: &Board, list: &mut MoveList) {
@@ -15,10 +18,9 @@ impl MoveGenerator {
             // if white
             if side == 0 {
                 to_bb &= !board.white_occupied()
-            }
-            else {
+            } else {
                 to_bb &= !board.black_occupied()
-            } 
+            }
             //println!("To bb {:?}", to_bb);
             while to_bb.0 > 0 {
                 let to = BitBoard::next(&mut to_bb);
@@ -26,7 +28,7 @@ impl MoveGenerator {
                 self.add_move(board, list, Pieces::KNIGHT, from.clone(), to);
             }
         }
-        //bb.knight_attacks() & w_empty 
+        //bb.knight_attacks() & w_empty
     }
 
     // Return knight attacks for the given square.

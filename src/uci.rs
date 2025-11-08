@@ -6,7 +6,9 @@ pub fn message_loop() {
 
     loop {
         let mut input = String::new();
-        std::io::stdin().read_line(&mut input).expect("Failed to read line");
+        std::io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
         let command = input.trim();
 
         let options = command.split_whitespace().collect::<Vec<&str>>();

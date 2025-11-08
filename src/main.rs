@@ -1,17 +1,17 @@
 mod bitboard;
+mod bitmove;
 mod board;
 mod defs;
 mod movegen;
-mod bitmove;
 mod movelist;
 mod perft;
 mod uci;
 
+use crate::bitboard::*;
 use crate::bitmove::*;
+use crate::movegen::MoveGenerator;
 use crate::movelist::*;
 use board::*;
-use crate::bitboard::*;
-use crate::movegen::MoveGenerator;
 
 fn main() {
     let mut board = Board::new();

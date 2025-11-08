@@ -7,7 +7,7 @@ impl Board {
         match side {
             Sides::WHITE => Ranks::R8,
             Sides::BLACK => Ranks::R1,
-            _ => panic!()
+            _ => panic!(),
         }
     }
 

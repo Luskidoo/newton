@@ -9,7 +9,6 @@ pub struct MoveList {
 }
 
 impl MoveList {
-
     pub fn new() -> Self {
         Self {
             list: unsafe {
@@ -47,7 +46,7 @@ impl MoveList {
             if to.0 > 63 || from.0 > 63 {
                 result = false;
             }
-        };
+        }
         result
     }
 }

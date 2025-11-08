@@ -1,4 +1,7 @@
-use crate::{defs::{Side, Sides, Square}, BitBoard};
+use crate::{
+    defs::{Side, Sides, Square},
+    BitBoard,
+};
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaChaRng;
 

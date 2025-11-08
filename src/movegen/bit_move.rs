@@ -5,15 +5,15 @@ use crate::defs::{Piece, Square, PIECE_CHAR_SMALL, SQUARE_NAME};
  * format change, the location needs to be changed only within the integer. */
 pub struct Shift;
 impl Shift {
-     pub const PIECE: usize = 0;
-     pub const FROM_SQ: usize = 3;
-     pub const TO_SQ: usize = 9;
-     pub const CAPTURE: usize = 15;
-     pub const PROMOTION: usize = 18;
-     pub const EN_PASSANT: usize = 21;
-     pub const DOUBLE_STEP: usize = 22;
-     pub const CASTLING: usize = 23;
-     pub const SORTSCORE: usize = 24;
+    pub const PIECE: usize = 0;
+    pub const FROM_SQ: usize = 3;
+    pub const TO_SQ: usize = 9;
+    pub const CAPTURE: usize = 15;
+    pub const PROMOTION: usize = 18;
+    pub const EN_PASSANT: usize = 21;
+    pub const DOUBLE_STEP: usize = 22;
+    pub const CASTLING: usize = 23;
+    pub const SORTSCORE: usize = 24;
 }
 
 #[derive(Copy, Clone, PartialEq)]

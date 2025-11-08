@@ -1,6 +1,9 @@
-use crate::{defs::{Piece, Pieces, Side, Sides, Square}, BitBoard, BitMove, Board, MoveList};
+use crate::{
+    defs::{Piece, Pieces, Side, Sides, Square},
+    BitBoard, BitMove, Board, MoveList,
+};
 
-use super::{MoveGenerator};
+use super::MoveGenerator;
 
 impl MoveGenerator {
     pub fn generate_rook_moves(&self, board: &Board, list: &mut MoveList) {
@@ -15,14 +18,13 @@ impl MoveGenerator {
             // if white
             if side == 0 {
                 to_bb &= !board.white_occupied()
-            }
-            else {
+            } else {
                 to_bb &= !board.black_occupied()
             }
-            
+
             //println!("{}", to_bb);
             while to_bb.0 > 0 {
-            let to = BitBoard::next(&mut to_bb);
+                let to = BitBoard::next(&mut to_bb);
                 //println!("Adding rook move from {} to {}", from, to);
                 self.add_move(&board, list, Pieces::ROOK, from.clone(), to)
             }
@@ -40,18 +42,16 @@ impl MoveGenerator {
             // if white
             if side == 0 {
                 to_bb &= !board.white_occupied()
-            }
-            else {
+            } else {
                 to_bb &= !board.black_occupied()
             }
             while to_bb.0 > 0 {
-            let to = BitBoard::next(&mut to_bb);
+                let to = BitBoard::next(&mut to_bb);
                 //println!("Adding bishop move from {} to {}", from, to);
                 self.add_move(&board, list, Pieces::BISHOP, from.clone(), to)
             }
         }
     }
-
 
     pub fn generate_queen_moves(&self, board: &Board, list: &mut MoveList) {
         let side = board.game_state.side_to_move as usize;
@@ -65,8 +65,7 @@ impl MoveGenerator {
             // if white
             if side == 0 {
                 to_bb &= !board.white_occupied()
-            }
-            else {
+            } else {
                 to_bb &= !board.black_occupied()
             }
             while to_bb.0 > 0 {
@@ -80,8 +79,7 @@ impl MoveGenerator {
             // if white
             if side == 0 {
                 to_bb &= !board.white_occupied()
-            }
-            else {
+            } else {
                 to_bb &= !board.black_occupied()
             }
             while to_bb.0 > 0 {
@@ -92,7 +90,12 @@ impl MoveGenerator {
         }
     }
 
-    pub fn get_slider_attacks(&self, piece: Piece, square: &Square, occupancy: BitBoard) -> BitBoard {
+    pub fn get_slider_attacks(
+        &self,
+        piece: Piece,
+        square: &Square,
+        occupancy: BitBoard,
+    ) -> BitBoard {
         match piece {
             Pieces::ROOK => {
                 let index = self.rook_magics[square.0].get_index(occupancy);
@@ -110,6 +113,4 @@ impl MoveGenerator {
             _ => panic!("Not a sliding piece: {piece}"),
         }
     }
-
-
 }
