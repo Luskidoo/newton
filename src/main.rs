@@ -1,23 +1,16 @@
 mod bitboard;
 mod board;
-mod sq;
-//mod fen;
 mod defs;
-//mod misc;
 mod movegen;
 mod bitmove;
 mod movelist;
 mod perft;
 mod uci;
 
-//mod extra;
 use crate::bitmove::*;
 use crate::movelist::*;
-//use crate::fen::*;
 use board::*;
 use crate::bitboard::*;
-//use crate::extra::magic::*;
-//use fen::*;
 use crate::movegen::MoveGenerator;
 
 fn main() {
@@ -33,7 +26,4 @@ fn main() {
     let mut list = MoveList::new();
     let move_gen = MoveGenerator::new();
     perft::run(board, 5, move_gen);
-    //println!("{:?}", MoveGenerator::rook_mask(0));
-    //println!("{:?}", MoveGenerator::rook_attacks(0, BitBoard(258)));
-
 }

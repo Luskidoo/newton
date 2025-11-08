@@ -1,6 +1,6 @@
 use crate::{defs::{Piece, Pieces, Side, Sides, Square}, BitBoard, BitMove, Board, MoveList};
 
-use super::{MoveGenerator, SQ};
+use super::{MoveGenerator};
 
 impl MoveGenerator {
     pub fn generate_rook_moves(&self, board: &Board, list: &mut MoveList) {

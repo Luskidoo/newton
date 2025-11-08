@@ -1,4 +1,4 @@
-use super::{MoveGenerator, SQ};
+use super::{MoveGenerator};
 
 use crate::{bitboard::*, defs::{Pieces, Side, Sides, Square}, BitMove, Board, MoveList};
 

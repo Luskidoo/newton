@@ -10,7 +10,6 @@ use crate::defs::Pieces;
 use crate::defs::Side;
 use crate::defs::Square;
 use crate::movelist::*;
-use crate::sq::*;
 use crate::defs::{Sides};
 
 mod pawns;

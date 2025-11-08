@@ -1,4 +1,4 @@
-use crate::sq::*;
+use crate::defs::Square;
 
 #[derive(Copy, Clone)]
 pub struct BitMove {
@@ -7,7 +7,7 @@ pub struct BitMove {
 
 impl BitMove {
     #[inline(always)]
-    pub const fn new(flag_bits: u16, src: SQ, dst: SQ) -> BitMove {
+    pub const fn new(flag_bits: u16, src: Square, dst: Square) -> BitMove {
         BitMove {
             data: (flag_bits << 12) | src.0 as u16 | ((dst.0 as u16) << 6),
         }

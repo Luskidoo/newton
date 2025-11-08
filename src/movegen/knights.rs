@@ -1,6 +1,6 @@
 use crate::{defs::{Pieces, Square}, BitBoard, BitMove, Board, MoveList};
 
-use super::{MoveGenerator, SQ};
+use super::{MoveGenerator};
 
 impl MoveGenerator {
     pub fn generate_knight_moves(&self, board: &Board, list: &mut MoveList) {

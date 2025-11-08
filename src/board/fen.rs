@@ -8,17 +8,7 @@
 use crate::bitboard::*;
 use crate::board::*;
 use crate::defs::{Castling, Sides, Square, FEN_START_POSITION, MAX_GAME_MOVES, MAX_MOVE_RULE, Ranks, Files};
-
-// use super::{
-//     defs::{Files, Pieces, Ranks, Squares, BB_SQUARES},
-//     Board,
-// };
-// use crate::{
-//     defs::{Castling, Sides, Square, FEN_START_POSITION, MAX_GAME_MOVES, MAX_MOVE_RULE},
-//     misc::parse,
-// };
 use if_chain::if_chain;
-use std::borrow::Borrow;
 use std::ops::RangeInclusive;
 
 /** Definitions used by the FEN-reader */
