@@ -1,5 +1,4 @@
 mod bitboard;
-mod bitmove;
 mod board;
 mod defs;
 mod movegen;
@@ -8,7 +7,6 @@ mod perft;
 mod uci;
 
 use crate::bitboard::*;
-use crate::bitmove::*;
 use crate::movegen::MoveGenerator;
 use crate::movelist::*;
 use board::*;

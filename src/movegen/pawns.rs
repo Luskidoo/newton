@@ -3,7 +3,7 @@ use super::MoveGenerator;
 use crate::{
     bitboard::*,
     defs::{Pieces, Side, Sides, Square},
-    BitMove, Board, MoveList,
+    Board, MoveList,
 };
 
 impl MoveGenerator {
@@ -13,7 +13,7 @@ impl MoveGenerator {
 
     fn w_pawn_double_push(bb: BitBoard, empty: BitBoard) -> BitBoard {
         let single_pushes = Self::w_pawn_single_push(bb, empty);
-        single_pushes.north_one() & empty & BitBoard::rank4
+        single_pushes.north_one() & empty & BitBoard::RANK4
     }
 
     fn b_pawn_single_push(bb: BitBoard, empty: BitBoard) -> BitBoard {
@@ -22,7 +22,7 @@ impl MoveGenerator {
 
     fn b_pawn_double_push(bb: BitBoard, empty: BitBoard) -> BitBoard {
         let single_pushes = Self::b_pawn_single_push(bb, empty);
-        single_pushes.south_one() & empty & BitBoard::rank5
+        single_pushes.south_one() & empty & BitBoard::RANK5
     }
 
     pub fn generate_pawn_pushes(&self, board: &Board, list: &mut MoveList) {

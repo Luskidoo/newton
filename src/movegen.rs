@@ -3,7 +3,6 @@ use bit_move::Shift;
 use magics::Magic;
 
 use crate::bitboard::*;
-use crate::bitmove::*;
 use crate::board::*;
 use crate::defs::Piece;
 use crate::defs::Pieces;
@@ -70,31 +69,31 @@ impl MoveGenerator {
     }
 
     pub fn generate_all_moves(&self, board: &Board, list: &mut MoveList) {
-        let initial_count = list.len();
+        //let initial_count = list.len();
         Self::generate_pawn_moves(&self, board, list);
         //println!("Pawn moves: {}", list.len() - initial_count);
 
-        let count_before = list.len();
+        //let count_before = list.len();
         Self::generate_knight_moves(&self, board, list);
         //println!("Knight moves: {}", list.len() - count_before);
 
-        let count_before = list.len();
+        //let count_before = list.len();
         Self::generate_rook_moves(&self, board, list);
         //println!("Rook moves: {}", list.len() - count_before);
 
-        let count_before = list.len();
+        //let count_before = list.len();
         Self::generate_bishop_moves(&self, board, list);
         //println!("Bishop moves: {}", list.len() - count_before);
 
-        let count_before = list.len();
+        //let count_before = list.len();
         Self::generate_queen_moves(&self, board, list);
         //println!("Queen moves: {}", list.len() - count_before);
 
-        let count_before = list.len();
+        //let count_before = list.len();
         Self::generate_king_moves(&self, board, list);
         //println!("King moves: {}", list.len() - count_before);
 
-        let count_before = list.len();
+        //let count_before = list.len();
         Self::castling(&self, board, list);
         //println!("Castling moves: {}", list.len() - count_before);
     }
