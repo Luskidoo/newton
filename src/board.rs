@@ -104,13 +104,12 @@ impl Board {
     pub fn remove_piece(&mut self, side: Side, piece: Piece, square: Square) {
         self.pieces[side][piece] ^= square.clone().to_bb();
         //self.bb_side[side] ^= square.to_bb();
-        self.piece_list[square.0] = Pieces::NONE;
+    self.piece_list[square.0] = Pieces::NONE;
         self.game_state.zobrist_key ^= self.zr.piece(side, piece, square);
 
         // Incremental updates
         // =============================================================
-        let flip = side == Sides::WHITE;
-        //let s = if flip { FLIP[square.0] } else { square };
+        //let s = if side == Sides::WHITE { FLIP[square.0] } else { square };
         //self.game_state.psqt[side] -= PSQT_MG[piece][s];
     }
 
@@ -118,7 +117,7 @@ impl Board {
     pub fn put_piece(&mut self, side: Side, piece: Piece, square: Square) {
         self.pieces[side][piece] |= square.clone().to_bb();
         //self.bb_side[side] |= square.to_bb();
-        self.piece_list[square.0] = piece;
+    self.piece_list[square.0] = piece;
         self.game_state.zobrist_key ^= self.zr.piece(side, piece, square);
 
         // Incremental updates
@@ -221,14 +220,14 @@ impl Board {
                 let square = rank * 8 + file;
                 let mut piece_char = '.';
 
-                // Iterate piece types (KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN)
-                for piece_type in 0..NrOf::PIECE_TYPES {
-                    if self.pieces[Sides::WHITE][piece_type].0 & (1 << square) != 0 {
+                // Prefer using piece_list for type, then consult bitboards for color
+                let piece_type = self.piece_list[square];
+                if piece_type != Pieces::NONE {
+                    let white_has = (self.pieces[Sides::WHITE][piece_type].0 & (1u64 << square)) != 0;
+                    if white_has {
                         piece_char = white_chars[piece_type];
-                        break;
-                    } else if self.pieces[Sides::BLACK][piece_type].0 & (1 << square) != 0 {
+                    } else {
                         piece_char = black_chars[piece_type];
-                        break;
                     }
                 }
 
