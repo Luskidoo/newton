@@ -209,9 +209,9 @@ impl Board {
     }
 
     pub fn print_board(&self) {
-        let piece_chars = [
-            'K', 'Q', 'R', 'B', 'N', 'P', 'k', 'q', 'r', 'b', 'n', 'p', '.',
-        ];
+        // Characters for white and black pieces by piece type index
+        let white_chars = ['K', 'Q', 'R', 'B', 'N', 'P'];
+        let black_chars = ['k', 'q', 'r', 'b', 'n', 'p'];
 
         println!("  a b c d e f g h");
         println!("  ---------------");
@@ -221,12 +221,13 @@ impl Board {
                 let square = rank * 8 + file;
                 let mut piece_char = '.';
 
-                for (piece_type, boards) in self.pieces.iter().enumerate() {
-                    if boards[Sides::WHITE].0 & (1 << square) != 0 {
-                        piece_char = piece_chars[piece_type];
+                // Iterate piece types (KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN)
+                for piece_type in 0..NrOf::PIECE_TYPES {
+                    if self.pieces[Sides::WHITE][piece_type].0 & (1 << square) != 0 {
+                        piece_char = white_chars[piece_type];
                         break;
-                    } else if boards[Sides::BLACK].0 & (1 << square) != 0 {
-                        piece_char = piece_chars[piece_type + 6];
+                    } else if self.pieces[Sides::BLACK][piece_type].0 & (1 << square) != 0 {
+                        piece_char = black_chars[piece_type];
                         break;
                     }
                 }
