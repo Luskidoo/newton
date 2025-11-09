@@ -8,7 +8,7 @@
 use crate::bitboard::*;
 use crate::board::*;
 use crate::defs::{
-    Castling, Files, Ranks, Sides, Square, FEN_START_POSITION, MAX_GAME_MOVES, MAX_MOVE_RULE,
+    Castling, FEN_START_POSITION, Files, MAX_GAME_MOVES, MAX_MOVE_RULE, Ranks, Sides, Square,
 };
 use if_chain::if_chain;
 use std::ops::RangeInclusive;

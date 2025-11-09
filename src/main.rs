@@ -1,9 +1,11 @@
 mod bitboard;
 mod board;
 mod defs;
+mod evaluate;
 mod movegen;
 mod movelist;
 mod perft;
+mod search;
 mod uci;
 
 use crate::bitboard::*;
@@ -23,5 +25,6 @@ fn main() {
     let fen_result = board.fen_read(Some(kiwi_fen));
     let mut list = MoveList::new();
     let move_gen = MoveGenerator::new();
-    perft::run(board, 5, move_gen);
+    //perft::run(board, 2, move_gen);
+    uci::message_loop();
 }

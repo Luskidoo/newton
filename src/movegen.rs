@@ -45,10 +45,16 @@ impl MoveGenerator {
             bishop: vec![BitBoard(0); 5248],
         };
         mg.init_pawn_attacks();
+        //println!("Pawn init done");
         mg.init_king_moves();
+        //println!("King init done");
         mg.init_knight_moves();
+        //println!("Knight init done");
         mg.init_magics(true);
+        //println!("Rook magics init done");
         mg.init_magics(false);
+        //println!("Bishop magics init done");
+        //println!("Magics ready");
         mg
     }
 

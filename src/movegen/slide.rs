@@ -1,6 +1,6 @@
 use crate::{
-    defs::{Piece, Pieces, Square},
     BitBoard, Board, MoveList,
+    defs::{Piece, Pieces, Square},
 };
 
 use super::MoveGenerator;

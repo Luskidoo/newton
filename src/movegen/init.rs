@@ -89,7 +89,10 @@ impl MoveGenerator {
                 let index = magic.get_index(blocker);
 
                 if index < offset as usize || index > end as usize {
-                    panic!("Indexing error. Error in Magics. Square: {}, Index: {}, Offset: {}, End: {}", sq, index, offset, end);
+                    panic!(
+                        "Indexing error. Error in Magics. Square: {}, Index: {}, Offset: {}, End: {}",
+                        sq, index, offset, end
+                    );
                 }
 
                 if table[index] == BitBoard(0) {

@@ -6,9 +6,9 @@ use std::{
 };
 
 use crate::{
+    Board, MoveList,
     defs::{Pieces, SQUARE_NAME},
     movegen::MoveGenerator,
-    Board, MoveList,
 };
 
 pub fn run(mut board: Board, depth: u8, mg: MoveGenerator) {

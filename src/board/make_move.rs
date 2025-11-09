@@ -1,7 +1,7 @@
 use crate::{
+    BitBoard, Board, MoveGenerator,
     defs::{Castling, NrOf, Piece, Pieces, Side, Sides, Square},
     movegen::bit_move::Move,
-    BitBoard, Board, MoveGenerator,
 };
 
 // Castling Permissions Per Square

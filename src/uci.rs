@@ -1,4 +1,5 @@
 use crate::board::Board;
+use crate::search;
 
 pub fn message_loop() {
     let mut board = Board::new();
@@ -17,6 +18,7 @@ pub fn message_loop() {
             ["ucinewgame"] => reset(&mut board),
             ["isready"] => println!("readyok"),
             ["position", options @ ..] => position(&mut board, options),
+            ["go", options @ ..] => go(options),
             ["quit"] => std::process::exit(0),
 
             _ => eprintln!("Unknown command: '{}'", command.trim_end()),
@@ -39,6 +41,36 @@ fn position(board: &mut Board, options: &[&str]) {
             ["fen", position @ ..] => {
                 board.fen_read(Some(&position.join("")));
             }
+            _ => {}
+        }
+    }
+}
+
+fn go(options: &[&str]) {
+    let info = search::SearchInfo::new();
+
+    while !options.is_empty() {
+        match options {
+            ["infinite"] => {
+                todo!()
+            }
+
+            ["wtime"] => {
+                todo!()
+            }
+
+            ["btime"] => {
+                todo!()
+            }
+
+            ["winc"] => {
+                todo!()
+            }
+
+            ["binc"] => {
+                todo!()
+            }
+
             _ => {}
         }
     }

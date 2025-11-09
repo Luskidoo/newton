@@ -1,4 +1,4 @@
-use crate::defs::{Piece, Square, PIECE_CHAR_SMALL, SQUARE_NAME};
+use crate::defs::{PIECE_CHAR_SMALL, Piece, SQUARE_NAME, Square};
 
 /* "Shift" is an enum which contains the number of bits that needed to be shifted to store
  * move data in a specific place within the u64 integer. This makes sure that, should the

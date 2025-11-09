@@ -1,6 +1,6 @@
 use crate::{
-    defs::{Side, Sides, Square},
     BitBoard,
+    defs::{Side, Sides, Square},
 };
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaChaRng;
@@ -39,24 +39,24 @@ impl ZobristRandoms {
             side.iter_mut().for_each(|piece| {
                 piece
                     .iter_mut()
-                    .for_each(|square| *square = random.gen::<u64>())
+                    .for_each(|square| *square = random.random::<u64>())
             })
         });
 
         zobrist_randoms
             .rnd_castling
             .iter_mut()
-            .for_each(|permission| *permission = random.gen::<u64>());
+            .for_each(|permission| *permission = random.random::<u64>());
 
         zobrist_randoms
             .rnd_sides
             .iter_mut()
-            .for_each(|side| *side = random.gen::<u64>());
+            .for_each(|side| *side = random.random::<u64>());
 
         zobrist_randoms
             .rnd_en_passant
             .iter_mut()
-            .for_each(|ep| *ep = random.gen::<u64>());
+            .for_each(|ep| *ep = random.random::<u64>());
 
         zobrist_randoms
     }

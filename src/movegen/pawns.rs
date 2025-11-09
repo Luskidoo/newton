@@ -1,9 +1,9 @@
 use super::MoveGenerator;
 
 use crate::{
+    Board, MoveList,
     bitboard::*,
     defs::{Pieces, Side, Sides, Square},
-    Board, MoveList,
 };
 
 impl MoveGenerator {

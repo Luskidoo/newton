@@ -1,4 +1,4 @@
-use crate::{movegen::bit_move::Move, BitBoard};
+use crate::{BitBoard, movegen::bit_move::Move};
 
 use super::Side;
 

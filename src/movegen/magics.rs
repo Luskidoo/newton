@@ -45,11 +45,11 @@ fn pop_1st_bit(bb: &mut BitBoard) -> u64 {
 }
 
 fn random_u64() -> u64 {
-    let mut rng = rand::thread_rng();
-    let u1: u64 = rng.gen::<u16>() as u64;
-    let u2: u64 = rng.gen::<u16>() as u64;
-    let u3: u64 = rng.gen::<u16>() as u64;
-    let u4: u64 = rng.gen::<u16>() as u64;
+    let mut rng = rand::rng();
+    let u1: u64 = rng.random::<u16>() as u64;
+    let u2: u64 = rng.random::<u16>() as u64;
+    let u3: u64 = rng.random::<u16>() as u64;
+    let u4: u64 = rng.random::<u16>() as u64;
     u1 | (u2 << 16) | (u3 << 32) | (u4 << 48)
 }
 
@@ -222,19 +222,25 @@ impl MoveGenerator {
 
     pub fn generate_magics(is_rook: bool) -> [BitBoard; 64] {
         let mut magics = [BitBoard(0); 64];
-        for sq in 0..64 {
-            let magic = Self::find_magic(
-                sq,
-                if is_rook {
-                    R_BITS[sq as usize]
-                } else {
-                    B_BITS[sq as usize]
-                },
-                is_rook,
-            );
-            //println!("{}, {:?}", sq, magic);
-            magics[sq as usize] = magic;
+        if is_rook {
+            magics = crate::defs::ROOK_MAGICS;
+        } else {
+            magics = crate::defs::BISHOP_MAGICS
         }
+        // TODO: move magic generation
+        // for sq in 0..64 {
+        //     let magic = Self::find_magic(
+        //         sq,
+        //         if is_rook {
+        //             R_BITS[sq as usize]
+        //         } else {
+        //             B_BITS[sq as usize]
+        //         },
+        //         is_rook,
+        //     );
+        //     println!("{}, {:?}", sq, magic);
+        //     magics[sq as usize] = magic;
+        // }
 
         magics
     }
