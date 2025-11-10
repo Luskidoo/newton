@@ -96,46 +96,48 @@ fn apply_moves(board: &mut Board, moves: &[&str]) {
 fn go(board: &mut Board, options: &[&str]) {
     let mut info = search::SearchInfo::new();
 
-    while !options.is_empty() {
-        match options {
-            ["infinite"] => {
-                todo!()
+    let mut i = 0;
+    while i < options.len() {
+        match options[i] {
+            "infinite" => {
+                // Implement infinite search if needed
+                // todo!()
             }
-
-            ["wtime", time @ ..] => {
-                if board.game_state.side_to_move == 0 {
-                    info.time = time[0].parse().unwrap();
+            "wtime" => {
+                if i + 1 < options.len() && board.game_state.side_to_move == 0 {
+                    info.time = options[i + 1].parse().unwrap_or(0);
+                    i += 1;
                 }
             }
-
-            ["btime", time @ ..] => {
-                if board.game_state.side_to_move == 1 {
-                    info.time = time[0].parse().unwrap();
+            "btime" => {
+                if i + 1 < options.len() && board.game_state.side_to_move == 1 {
+                    info.time = options[i + 1].parse().unwrap_or(0);
+                    i += 1;
                 }
             }
-
-            ["winc", increment @ ..] => {
-                if board.game_state.side_to_move == 0 {
-                    info.increment = increment[0].parse().unwrap();
+            "winc" => {
+                if i + 1 < options.len() && board.game_state.side_to_move == 0 {
+                    info.increment = options[i + 1].parse().unwrap_or(0);
+                    i += 1;
                 }
             }
-
-            ["binc", increment @ ..] => {
-                if board.game_state.side_to_move == 1 {
-                    info.increment = increment[0].parse().unwrap();
+            "binc" => {
+                if i + 1 < options.len() && board.game_state.side_to_move == 1 {
+                    info.increment = options[i + 1].parse().unwrap_or(0);
+                    i += 1;
                 }
             }
-
-            ["depth", depth @ ..] => {
-                info.depth = depth[0].parse().unwrap();
-
-                let move_generator = MoveGenerator::new();
-                let score= search::search_position(board, &info, &move_generator);
-                println!("{}", score);
+            "depth" => {
+                if i + 1 < options.len() {
+                    info.depth = options[i + 1].parse().unwrap_or(0);
+                    let move_generator = MoveGenerator::new();
+                    let score = search::search_position(board, &info, &move_generator);
+                    i += 1;
+                }
             }
-
             _ => {}
         }
+        i += 1;
     }
 }
 
