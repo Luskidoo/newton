@@ -1,5 +1,5 @@
 use crate::board::Board;
-use crate::defs::FEN_START_POSITION;
+use crate::defs::{FEN_START_POSITION, MAX_DEPTH};
 use crate::movegen::{MoveGenerator, uci};
 use crate::search;
 use std::sync::{Arc, Mutex};
@@ -88,6 +88,11 @@ pub fn message_loop() {
                         i += 1;
                     }
 
+                    // If no depth was specified, set a default depth
+                    if info.depth <= 0 {
+                        info.depth = MAX_DEPTH;
+                    }
+
                     // Spawn a dedicated search thread. It will lock the board for the
                     // duration of the search. The input thread remains free to handle
                     // commands such as "quit" (which calls process::exit and terminates
@@ -99,7 +104,9 @@ pub fn message_loop() {
                         let _ = search::search_position(&mut *b, &info, &move_generator);
                     });
                 }
-                ["quit"] => std::process::exit(0),
+                ["quit"] => {
+                    std::process::exit(0);
+                }
 
                 _ => eprintln!("Unknown command: '{}'", command.trim_end()),
             }

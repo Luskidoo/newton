@@ -1,9 +1,10 @@
 use crate::{board::Board, evaluate::evaluate_position, movegen::MoveGenerator, movelist::MoveList};
+use std::io::Write;
 
 pub struct SearchInfo {
     pub depth: i8,
-    pub time: u8,
-    pub increment: u8,
+    pub time: u32,
+    pub increment: u32,
 }
 
 impl SearchInfo {
@@ -53,12 +54,19 @@ pub fn alpha_beta(
 }
 
 pub fn search_position(board: &mut Board, info: &SearchInfo, move_generator: &MoveGenerator) {
+    let start_time = std::time::Instant::now();
+    let search_time = info.time / 20 + info.increment / 2;
     for curr_depth in 1..=info.depth {
         // Use curr_depth instead of info.depth to implement iterative deepening correctly.
         // This ensures each iteration searches to the appropriate depth level.
         let best_score = alpha_beta(board, curr_depth, -100000, 100000, info, move_generator);
     
         println!("info depth {} score {}", curr_depth, best_score);
+        let _ = std::io::stdout().flush();
+        let current_time = std::time::Instant::now();
+        if current_time.duration_since(start_time).as_millis() as u32 >= search_time {
+            break;
+        }
     //return best_score
     }
 }
