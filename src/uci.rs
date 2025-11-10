@@ -1,31 +1,113 @@
 use crate::board::Board;
-use crate::defs::{FEN_START_POSITION, Side};
+use crate::defs::FEN_START_POSITION;
 use crate::movegen::{MoveGenerator, uci};
 use crate::search;
+use std::sync::{Arc, Mutex};
+use std::thread;
 
 pub fn message_loop() {
-    let mut board = Board::new();
+    let board = Arc::new(Mutex::new(Board::new()));
     // set to the standard start position by default
-    let _ = board.fen_read(None);
-    loop {
-        let mut input = String::new();
-        std::io::stdin()
-            .read_line(&mut input)
-            .expect("Failed to read line");
-        let command = input.trim();
-
-        let options = command.split_whitespace().collect::<Vec<&str>>();
-        match options.as_slice() {
-            ["uci"] => uci(),
-            ["ucinewgame"] => reset(&mut board),
-            ["isready"] => println!("readyok"),
-            ["position", options @ ..] => position(&mut board, options),
-            ["go", options @ ..] => go(&mut board, options),
-            ["quit"] => std::process::exit(0),
-
-            _ => eprintln!("Unknown command: '{}'", command.trim_end()),
-        }
+    {
+        let mut b = board.lock().unwrap();
+        let _ = b.fen_read(None);
     }
+
+    // Spawn a thread to listen for UCI commands
+    let board_clone = Arc::clone(&board);
+    let input_thread = thread::spawn(move || {
+        loop {
+            let mut input = String::new();
+            std::io::stdin()
+                .read_line(&mut input)
+                .expect("Failed to read line");
+            let command = input.trim();
+
+            let options = command.split_whitespace().collect::<Vec<&str>>();
+            match options.as_slice() {
+                ["uci"] => {
+                    uci();
+                }
+                ["ucinewgame"] => {
+                    let mut b = board_clone.lock().unwrap();
+                    reset(&mut *b);
+                }
+                ["isready"] => println!("readyok"),
+                ["position", pos_options @ ..] => {
+                    let mut b = board_clone.lock().unwrap();
+                    position(&mut *b, pos_options);
+                }
+                ["go", go_options @ ..] => {
+                    // Parse search options and capture the side-to-move under a short lock.
+                    // We deliberately do NOT hold the lock during the whole search so the
+                    // input thread can still receive commands (eg. "quit") while searching.
+                    let side_to_move = {
+                        let b = board_clone.lock().unwrap();
+                        b.game_state.side_to_move
+                    };
+
+                    let mut info = search::SearchInfo::new();
+                    let mut i = 0;
+                    while i < go_options.len() {
+                        match go_options[i] {
+                            "infinite" => {
+                                // Implement infinite search if needed
+                            }
+                            "wtime" => {
+                                if i + 1 < go_options.len() && side_to_move == 0 {
+                                    info.time = go_options[i + 1].parse().unwrap_or(0);
+                                    i += 1;
+                                }
+                            }
+                            "btime" => {
+                                if i + 1 < go_options.len() && side_to_move == 1 {
+                                    info.time = go_options[i + 1].parse().unwrap_or(0);
+                                    i += 1;
+                                }
+                            }
+                            "winc" => {
+                                if i + 1 < go_options.len() && side_to_move == 0 {
+                                    info.increment = go_options[i + 1].parse().unwrap_or(0);
+                                    i += 1;
+                                }
+                            }
+                            "binc" => {
+                                if i + 1 < go_options.len() && side_to_move == 1 {
+                                    info.increment = go_options[i + 1].parse().unwrap_or(0);
+                                    i += 1;
+                                }
+                            }
+                            "depth" => {
+                                if i + 1 < go_options.len() {
+                                    info.depth = go_options[i + 1].parse().unwrap_or(0);
+                                    i += 1;
+                                }
+                            }
+                            _ => {}
+                        }
+                        i += 1;
+                    }
+
+                    // Spawn a dedicated search thread. It will lock the board for the
+                    // duration of the search. The input thread remains free to handle
+                    // commands such as "quit" (which calls process::exit and terminates
+                    // the whole process immediately).
+                    let board_for_search = Arc::clone(&board_clone);
+                    thread::spawn(move || {
+                        let mut b = board_for_search.lock().unwrap();
+                        let move_generator = MoveGenerator::new();
+                        let _ = search::search_position(&mut *b, &info, &move_generator);
+                    });
+                }
+                ["quit"] => std::process::exit(0),
+
+                _ => eprintln!("Unknown command: '{}'", command.trim_end()),
+            }
+        }
+    });
+
+    // Wait for the input thread (it runs indefinitely until quit)
+    let _ = input_thread.join();
 }
 
 fn uci() {
@@ -131,7 +213,7 @@ fn go(board: &mut Board, options: &[&str]) {
                 if i + 1 < options.len() {
                     info.depth = options[i + 1].parse().unwrap_or(0);
                     let move_generator = MoveGenerator::new();
-                    let score = search::search_position(board, &info, &move_generator);
+                    let _ = search::search_position(board, &info, &move_generator);
                     i += 1;
                 }
             }
@@ -143,5 +225,5 @@ fn go(board: &mut Board, options: &[&str]) {
 
 fn reset(board: &mut Board) {
     *board = Board::new();
-    board.fen_read(None);
+    let _ = board.fen_read(None);
 }
